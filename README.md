@@ -1,4 +1,3 @@
-[README-2.md](https://github.com/user-attachments/files/34328091/README-2.md)
 # Markov cost-effectiveness model in R
 
 *[Versión en español](README.es.md)*

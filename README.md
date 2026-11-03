@@ -52,7 +52,7 @@ I changed one assumption at a time and compared with the base case.
 ## How to run it
 
 1. Install R.
-2. Open `markov_model-2.R` and run the whole script.
+2. Open `markov_model.R` and run the whole script.
 3. It prints results to the console and saves the plot as `markov_trace.png`.
 
 No external packages are required.

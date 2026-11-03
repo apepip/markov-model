@@ -1,5 +1,7 @@
-[README.md](https://github.com/user-attachments/files/34327945/README.md)
+[README-2.md](https://github.com/user-attachments/files/34328091/README-2.md)
 # Markov cost-effectiveness model in R
+
+*[Versión en español](README.es.md)*
 
 My first health economic evaluation model: it compares a new, more expensive treatment against the current one and calculates the cost per QALY gained (ICER).
 
@@ -10,19 +12,19 @@ My first health economic evaluation model: it compares a new, more expensive tre
 - **Three health states:** Stable, Progression and Death (absorbing state).
 - **Yearly cycles** over 20 years, with a cohort of 1,000 people starting in Stable.
 - **Half-cycle correction** and **discounting** of costs and QALYs (3% in the base case).
-- **Outputs:** cost and QALYs per person for each treatment, differences, ICER, comparison against a willingness-to-pay threshold (CLP 20,000,000 per QALY, an example value) and the maximum drug price that keeps the ICER under that threshold.
+- **Outputs:** cost and QALYs per person for each treatment, differences, ICER, comparison against a willingness-to-pay threshold (USD 20,000 per QALY, an example value) and the maximum drug price that keeps the ICER under that threshold.
 
-Costs are in Chilean pesos (CLP). Roughly, US$1 ≈ CLP 930, so the example threshold is about US$21,500 per QALY.
+All costs are in US dollars (USD).
 
 ## Base case
 
 | | Cost per person | QALYs |
 |---|---|---|
-| Current treatment | CLP 8,083,493 | 3.149 |
-| New treatment | CLP 28,690,128 | 4.263 |
-| Difference | CLP 20,606,635 | 1.114 |
+| Current treatment | USD 8,648 | 3.149 |
+| New treatment | USD 30,706 | 4.263 |
+| Difference | USD 22,058 | 1.114 |
 
-**ICER: CLP 18,501,251 per QALY gained**, below the example threshold.
+**ICER: USD 19,805 per QALY gained**, just below the example threshold.
 
 ![Cohort trace for both treatments](markov_trace.png)
 
@@ -30,21 +32,21 @@ Costs are in Chilean pesos (CLP). Roughly, US$1 ≈ CLP 930, so the example thre
 
 I changed one assumption at a time and compared with the base case.
 
-| Change | ICER | Below CLP 20M? |
+| Change | ICER (USD per QALY) | Below USD 20,000? |
 |---|---|---|
-| Base case (3% discount, new drug price CLP 5.6M/year) | CLP 18.5M | Yes |
-| Discount rate 0% | CLP 16.9M | Yes |
-| Discount rate 5% | CLP 19.6M | Yes, barely |
-| New drug price CLP 3.6M/year | ~CLP 11.5M | Yes |
-| New drug price CLP 2.0M/year | ~CLP 5.9M | Yes |
-| New drug price CLP 1.5M/year | ~CLP 4.2M | Yes |
-| New treatment with the same mortality as the current one, price CLP 2.0M | Undefined | No extra QALYs (dominated) |
+| Base case (3% discount, new drug price USD 6,000/year) | 19,805 | Yes, barely |
+| Discount rate 0% | 18,095 | Yes |
+| Discount rate 5% | 20,971 | **No** |
+| New drug price USD 4,000/year | 12,823 | Yes |
+| New drug price USD 2,000/year | 5,841 | Yes |
+| New drug price USD 1,500/year | 4,096 | Yes |
+| New treatment with the same mortality as the current one, price USD 2,000 | Undefined | No extra QALYs (dominated) |
 
 ## What I learned
 
-- **Discounting** changes how much the future weighs. The new treatment spends early and gains life years late, so a higher discount rate raises the ICER.
-- **The ICER is a straight line of the price, not a proportion.** Each CLP 1M less in price lowers the ICER by about CLP 3.5M, but a price of zero does not give an ICER of zero, because the new treatment still reduces progression costs.
-- **Maximum price:** in the base case the drug can cost up to about CLP 6.03M per year and still stay at the threshold (about CLP 5.71M with a 5% discount rate).
+- **Discounting** changes how much the future weighs. The new treatment spends early and gains life years late, so a higher discount rate raises the ICER. Here, moving from 3% to 5% is enough to flip the conclusion.
+- **The ICER is a straight line of the price, not a proportion.** Each USD 1,000 less in price lowers the ICER by about USD 3,500, but a price of zero does not give an ICER of zero (it is about -USD 1,100), because the new treatment still reduces progression costs.
+- **Maximum price:** in the base case the drug can cost up to about USD 6,056 per year and still stay at the threshold (about USD 5,740 with a 5% discount rate and USD 6,607 with 0%).
 - **No benefit, no ICER:** if the new treatment does not improve survival there are no extra QALYs and the indicator is meaningless.
 
 ## How to run it
